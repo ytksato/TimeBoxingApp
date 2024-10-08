@@ -12,6 +12,7 @@ import { Clock, Zap, Plus, X, Edit2, Check } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
+// タスクの型定義
 interface Task {
   id: number;
   name: string;
@@ -24,6 +25,7 @@ interface Task {
 }
 
 const TimeBoxingApp: React.FC = () => {
+  // 状態の定義
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTaskName, setNewTaskName] = useState('');
   const [newTaskDuration, setNewTaskDuration] = useState(25);
@@ -32,6 +34,7 @@ const TimeBoxingApp: React.FC = () => {
   const [newTaskTime, setNewTaskTime] = useState('');
   const { toast } = useToast();
 
+  // 新しいタスクを追加する関数
   const addTask = () => {
     if (newTaskName.trim() !== '') {
       setTasks([...tasks, {
@@ -51,22 +54,26 @@ const TimeBoxingApp: React.FC = () => {
     }
   };
 
+  // タスクを削除する関数
   const removeTask = (taskId: number) => {
     setTasks(tasks.filter(task => task.id !== taskId));
   };
 
+  // タスクの編集モードを切り替える関数
   const toggleEditTask = (taskId: number) => {
     setTasks(tasks.map(task =>
       task.id === taskId ? { ...task, isEditing: !task.isEditing } : task
     ));
   };
 
+  // タスク名を更新する関数
   const updateTaskName = (taskId: number, newName: string) => {
     setTasks(tasks.map(task =>
       task.id === taskId ? { ...task, name: newName, isEditing: false } : task
     ));
   };
 
+  // AIアシスト機能を処理する関数
   const handleAIAssist = async () => {
     toast({
       title: "AIアシスタント",
@@ -91,6 +98,7 @@ const TimeBoxingApp: React.FC = () => {
     }, 2000);
   };
 
+  // 個々のタスクをレンダリングする関数
   const renderTask = (task: Task) => (
     <div key={task.id} className="flex justify-between items-center p-2 border-b">
       {task.isEditing ? (
@@ -114,6 +122,7 @@ const TimeBoxingApp: React.FC = () => {
 
   return (
     <div className="space-y-8">
+      {/* 新しいタスク追加フォーム */}
       <Card>
         <CardHeader>
           <CardTitle>新しいタスクを追加</CardTitle>
@@ -178,7 +187,9 @@ const TimeBoxingApp: React.FC = () => {
         </CardContent>
       </Card>
 
+      {/* タスク一覧表示エリア */}
       <div className="grid grid-cols-3 gap-4">
+        {/* 予定されたタスク */}
         <Card>
           <CardHeader>
             <CardTitle>予定されたタスク</CardTitle>
@@ -191,6 +202,7 @@ const TimeBoxingApp: React.FC = () => {
           </CardContent>
         </Card>
 
+        {/* 詳細なタスク */}
         <Card>
           <CardHeader>
             <CardTitle>詳細なタスク</CardTitle>
@@ -207,6 +219,7 @@ const TimeBoxingApp: React.FC = () => {
           </CardContent>
         </Card>
 
+        {/* TODOリスト */}
         <Card>
           <CardHeader>
             <CardTitle>TODOリスト</CardTitle>
@@ -219,6 +232,7 @@ const TimeBoxingApp: React.FC = () => {
         </Card>
       </div>
 
+      {/* AIアシスタント機能 */}
       <Card>
         <CardHeader>
           <CardTitle>AIアシスタント</CardTitle>
